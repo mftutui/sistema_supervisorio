@@ -39,3 +39,4 @@ nbactions.xml
 
 
 # End of https://www.gitignore.io/api/git,java,netbeans
+/sistema_supervisorio/nbproject/private/
