@@ -5,17 +5,23 @@
  */
 package interface_usuario;
 
+import java.awt.Container;
+
 /**
  *
  * @author pfsel
  */
 public class JFPrincipal extends javax.swing.JFrame {
-
+    public Container painelPrincipal;
     /**
      * Creates new form JFPrincipal
      */
     public JFPrincipal() {
         initComponents();
+        this.painelPrincipal = this.getContentPane();
+        this.setLocationRelativeTo(null);
+        this.setTitle("Sistema supervisório");
+
     }
 
     /**
@@ -27,69 +33,67 @@ public class JFPrincipal extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        JBGMODO = new javax.swing.ButtonGroup();
         jPanel1 = new javax.swing.JPanel();
-        JBteste = new javax.swing.JButton();
-        JTFteste = new java.awt.TextField();
+        JBBack = new javax.swing.JButton();
+        JBForward = new javax.swing.JButton();
+        JBRight = new javax.swing.JButton();
+        JBLeft = new javax.swing.JButton();
+        JRBManual = new javax.swing.JRadioButton();
+        JRBAutonomo = new javax.swing.JRadioButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        JBteste.setText("coé");
-        JBteste.addActionListener(new java.awt.event.ActionListener() {
+        jPanel1.setMaximumSize(new java.awt.Dimension(500, 500));
+        jPanel1.setPreferredSize(new java.awt.Dimension(500, 500));
+        jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        JBBack.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/baixo.png"))); // NOI18N
+        jPanel1.add(JBBack, new org.netbeans.lib.awtextra.AbsoluteConstraints(391, 201, -1, -1));
+
+        JBForward.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/cima.png"))); // NOI18N
+        jPanel1.add(JBForward, new org.netbeans.lib.awtextra.AbsoluteConstraints(391, 152, -1, -1));
+
+        JBRight.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/direita.png"))); // NOI18N
+        jPanel1.add(JBRight, new org.netbeans.lib.awtextra.AbsoluteConstraints(464, 201, -1, -1));
+
+        JBLeft.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/esquerda.png"))); // NOI18N
+        jPanel1.add(JBLeft, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 201, -1, -1));
+
+        JBGMODO.add(JRBManual);
+        JRBManual.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        JRBManual.setText("MANUAL");
+        JRBManual.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                JBtesteActionPerformed(evt);
+                JRBManualActionPerformed(evt);
             }
         });
+        jPanel1.add(JRBManual, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 20, -1, -1));
 
-        JTFteste.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                JTFtesteActionPerformed(evt);
-            }
-        });
-
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(140, 140, 140)
-                .addComponent(JBteste)
-                .addContainerGap(211, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(JTFteste, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(73, 73, 73))
-        );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(101, 101, 101)
-                .addComponent(JBteste)
-                .addGap(48, 48, 48)
-                .addComponent(JTFteste, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(108, Short.MAX_VALUE))
-        );
+        JBGMODO.add(JRBAutonomo);
+        JRBAutonomo.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        JRBAutonomo.setText("AUTÔNOMO");
+        jPanel1.add(JRBAutonomo, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 40, -1, -1));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 646, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 263, Short.MAX_VALUE)
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void JBtesteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JBtesteActionPerformed
-    JTFteste.setText("daedae");
-    }//GEN-LAST:event_JBtesteActionPerformed
-
-    private void JTFtesteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JTFtesteActionPerformed
+    private void JRBManualActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JRBManualActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_JTFtesteActionPerformed
+    }//GEN-LAST:event_JRBManualActionPerformed
 
     /**
      * @param args the command line arguments
@@ -127,8 +131,13 @@ public class JFPrincipal extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton JBteste;
-    private java.awt.TextField JTFteste;
+    private javax.swing.JButton JBBack;
+    private javax.swing.JButton JBForward;
+    private javax.swing.ButtonGroup JBGMODO;
+    private javax.swing.JButton JBLeft;
+    private javax.swing.JButton JBRight;
+    private javax.swing.JRadioButton JRBAutonomo;
+    private javax.swing.JRadioButton JRBManual;
     private javax.swing.JPanel jPanel1;
     // End of variables declaration//GEN-END:variables
 }
