@@ -6,6 +6,9 @@
 package interface_usuario;
 
 import java.awt.Container;
+import javax.ws.rs.ClientErrorException;
+import javax.ws.rs.client.Client;
+import javax.ws.rs.client.WebTarget;
 
 /**
  *
@@ -13,6 +16,8 @@ import java.awt.Container;
  */
 public class JFPrincipal extends javax.swing.JFrame {
     public Container painelPrincipal;
+    ClienteRobot c = new ClienteRobot();
+   
     /**
      * Creates new form JFPrincipal
      */
@@ -41,6 +46,7 @@ public class JFPrincipal extends javax.swing.JFrame {
         JBLeft = new javax.swing.JButton();
         JRBManual = new javax.swing.JRadioButton();
         JRBAutonomo = new javax.swing.JRadioButton();
+        JTFPrincipal = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -55,9 +61,19 @@ public class JFPrincipal extends javax.swing.JFrame {
         jPanel1.add(JBForward, new org.netbeans.lib.awtextra.AbsoluteConstraints(391, 152, -1, -1));
 
         JBRight.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/direita.png"))); // NOI18N
+        JBRight.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                JBRightActionPerformed(evt);
+            }
+        });
         jPanel1.add(JBRight, new org.netbeans.lib.awtextra.AbsoluteConstraints(464, 201, -1, -1));
 
         JBLeft.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/esquerda.png"))); // NOI18N
+        JBLeft.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                JBLeftActionPerformed(evt);
+            }
+        });
         jPanel1.add(JBLeft, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 201, -1, -1));
 
         JBGMODO.add(JRBManual);
@@ -74,6 +90,7 @@ public class JFPrincipal extends javax.swing.JFrame {
         JRBAutonomo.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         JRBAutonomo.setText("AUTÔNOMO");
         jPanel1.add(JRBAutonomo, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 40, -1, -1));
+        jPanel1.add(JTFPrincipal, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 20, 180, -1));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -94,6 +111,15 @@ public class JFPrincipal extends javax.swing.JFrame {
     private void JRBManualActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JRBManualActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_JRBManualActionPerformed
+
+    private void JBRightActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JBRightActionPerformed
+      
+        JTFPrincipal.setText(c.olaTexto());
+    }//GEN-LAST:event_JBRightActionPerformed
+
+    private void JBLeftActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JBLeftActionPerformed
+      JTFPrincipal.setText(c.soma("/soma"));
+    }//GEN-LAST:event_JBLeftActionPerformed
 
     /**
      * @param args the command line arguments
@@ -138,6 +164,7 @@ public class JFPrincipal extends javax.swing.JFrame {
     private javax.swing.JButton JBRight;
     private javax.swing.JRadioButton JRBAutonomo;
     private javax.swing.JRadioButton JRBManual;
+    private javax.swing.JTextField JTFPrincipal;
     private javax.swing.JPanel jPanel1;
     // End of variables declaration//GEN-END:variables
 }
