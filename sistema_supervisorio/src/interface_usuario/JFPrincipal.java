@@ -55,12 +55,25 @@ public class JFPrincipal extends javax.swing.JFrame {
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         JBBack.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/baixo.png"))); // NOI18N
+        JBBack.setEnabled(false);
+        JBBack.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                JBBackActionPerformed(evt);
+            }
+        });
         jPanel1.add(JBBack, new org.netbeans.lib.awtextra.AbsoluteConstraints(391, 201, -1, -1));
 
         JBForward.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/cima.png"))); // NOI18N
+        JBForward.setEnabled(false);
+        JBForward.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                JBForwardActionPerformed(evt);
+            }
+        });
         jPanel1.add(JBForward, new org.netbeans.lib.awtextra.AbsoluteConstraints(391, 152, -1, -1));
 
         JBRight.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/direita.png"))); // NOI18N
+        JBRight.setEnabled(false);
         JBRight.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 JBRightActionPerformed(evt);
@@ -69,6 +82,7 @@ public class JFPrincipal extends javax.swing.JFrame {
         jPanel1.add(JBRight, new org.netbeans.lib.awtextra.AbsoluteConstraints(464, 201, -1, -1));
 
         JBLeft.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/esquerda.png"))); // NOI18N
+        JBLeft.setEnabled(false);
         JBLeft.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 JBLeftActionPerformed(evt);
@@ -109,18 +123,33 @@ public class JFPrincipal extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void JRBManualActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JRBManualActionPerformed
-        // TODO add your handling code here:
+          this.liberaBotoes();
     }//GEN-LAST:event_JRBManualActionPerformed
 
     private void JBRightActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JBRightActionPerformed
-      
-        JTFPrincipal.setText(c.olaTexto());
+       JTFPrincipal.setText(c.movimenta("/direita"));
     }//GEN-LAST:event_JBRightActionPerformed
 
     private void JBLeftActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JBLeftActionPerformed
-      JTFPrincipal.setText(c.soma("/soma"));
+        JTFPrincipal.setText(c.movimenta("/esquerda")); 
     }//GEN-LAST:event_JBLeftActionPerformed
 
+    private void JBForwardActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JBForwardActionPerformed
+       JTFPrincipal.setText(c.movimenta("/frente"));
+    }//GEN-LAST:event_JBForwardActionPerformed
+
+    private void JBBackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JBBackActionPerformed
+        JTFPrincipal.setText(c.movimenta("/re"));
+    }//GEN-LAST:event_JBBackActionPerformed
+    
+    private void liberaBotoes(){
+        JBBack.setEnabled(true);
+        JBForward.setEnabled(true);
+        JBLeft.setEnabled(true);
+        JBRight.setEnabled(true);
+        JRBAutonomo.setEnabled(false); 
+        
+    }
     /**
      * @param args the command line arguments
      */

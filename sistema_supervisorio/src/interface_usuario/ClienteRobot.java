@@ -25,7 +25,7 @@ public class ClienteRobot {
 
     private WebTarget webTarget;
     private Client client;
-    private static final String BASE_URI = "http://localhost:5000";
+    private static final String BASE_URI = "http://192.168.1.14:5000";
 
     public ClienteRobot() {
         client = javax.ws.rs.client.ClientBuilder.newClient();
@@ -34,17 +34,16 @@ public class ClienteRobot {
 
   
 
-    public String soma(String nome) throws ClientErrorException {
+    public String movimenta(String nome) throws ClientErrorException {
         WebTarget resource = webTarget;
         resource = resource.path(java.text.MessageFormat.format("{0}", new Object[]{nome}));
         return resource.request(javax.ws.rs.core.MediaType.APPLICATION_XML).get(String.class);
     }
 
-    public String olaTexto() throws ClientErrorException {
+    public String first_page() throws ClientErrorException {
         WebTarget resource = webTarget;
         return resource.request(javax.ws.rs.core.MediaType.TEXT_PLAIN).get(String.class);
     }
-
    
 
     public void close() {
