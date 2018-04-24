@@ -20,9 +20,9 @@ class EV3Manual(object):
         sleep(2)
 
     def direita(self):
-        m_esq.run_timed(time_sp=3800, speed_sp=90)
+        m_esq.run_timed(time_sp=3350, speed_sp=90)
         sleep(2)
 
     def esquerda(self):
-        m_dir.run_timed(time_sp=3800, speed_sp=90)
+        m_dir.run_timed(time_sp=3350, speed_sp=90)
         sleep(2)
