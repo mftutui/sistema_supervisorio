@@ -25,7 +25,7 @@ public class ClienteRobot {
 
     private WebTarget webTarget;
     private Client client;
-    private static final String BASE_URI = "http://192.168.1.14:5000";
+    private static final String BASE_URI = "http://10.1.1.5:5000";
 
     public ClienteRobot() {
         client = javax.ws.rs.client.ClientBuilder.newClient();
