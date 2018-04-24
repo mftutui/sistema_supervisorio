@@ -127,19 +127,27 @@ public class JFPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_JRBManualActionPerformed
 
     private void JBRightActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JBRightActionPerformed
-       JTFPrincipal.setText(c.movimenta("/direita"));
+       GerenciaThread g = new GerenciaThread("/re");
+        g.start();        
+        JTFPrincipal.setText("direita");
     }//GEN-LAST:event_JBRightActionPerformed
 
     private void JBLeftActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JBLeftActionPerformed
-        JTFPrincipal.setText(c.movimenta("/esquerda")); 
+        GerenciaThread g = new GerenciaThread("/re");
+        g.start();        
+        JTFPrincipal.setText("esquerda");
     }//GEN-LAST:event_JBLeftActionPerformed
 
     private void JBForwardActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JBForwardActionPerformed
-       JTFPrincipal.setText(c.movimenta("/frente"));
+      GerenciaThread g = new GerenciaThread("/re");
+        g.start();        
+        JTFPrincipal.setText("frente");
     }//GEN-LAST:event_JBForwardActionPerformed
 
     private void JBBackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JBBackActionPerformed
-        JTFPrincipal.setText(c.movimenta("/re"));
+        GerenciaThread g = new GerenciaThread("/re");
+        g.start();        
+        JTFPrincipal.setText("re");
     }//GEN-LAST:event_JBBackActionPerformed
     
     private void liberaBotoes(){
