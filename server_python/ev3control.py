@@ -10,13 +10,13 @@ class EV3Manual(object):
       #  m_dir = LargeMotor(motor2)
 
     def re(self):
-        m_esq.run_timed(time_sp=3000, speed_sp=-100)
-        m_dir.run_timed(time_sp=3000, speed_sp=-100)
+        m_esq.run_timed(time_sp=3000, speed_sp=-400)
+        m_dir.run_timed(time_sp=3000, speed_sp=-400)
         sleep(2)
 
     def frente(self):
-        m_esq.run_timed(time_sp=3000, speed_sp=100)
-        m_dir.run_timed(time_sp=3000, speed_sp=100)
+        m_esq.run_timed(time_sp=3000, speed_sp=400)
+        m_dir.run_timed(time_sp=3000, speed_sp=400)
         sleep(2)
 
     def direita(self):

@@ -127,19 +127,19 @@ public class JFPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_JRBManualActionPerformed
 
     private void JBRightActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JBRightActionPerformed
-       GerenciaThread g = new GerenciaThread("/re");
+       GerenciaThread g = new GerenciaThread("/direita");
         g.start();        
         JTFPrincipal.setText("direita");
     }//GEN-LAST:event_JBRightActionPerformed
 
     private void JBLeftActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JBLeftActionPerformed
-        GerenciaThread g = new GerenciaThread("/re");
+        GerenciaThread g = new GerenciaThread("/esquerda");
         g.start();        
         JTFPrincipal.setText("esquerda");
     }//GEN-LAST:event_JBLeftActionPerformed
 
     private void JBForwardActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JBForwardActionPerformed
-      GerenciaThread g = new GerenciaThread("/re");
+      GerenciaThread g = new GerenciaThread("/frente");
         g.start();        
         JTFPrincipal.setText("frente");
     }//GEN-LAST:event_JBForwardActionPerformed
