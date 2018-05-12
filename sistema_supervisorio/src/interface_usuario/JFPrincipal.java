@@ -9,7 +9,16 @@ import java.awt.Container;
 import javax.ws.rs.ClientErrorException;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.WebTarget;
+import java.lang.Exception;
+import com.rabbitmq.client.*;
+import java.lang.Exception;
+import com.rabbitmq.client.*;
 
+import java.io.IOException;
+import java.util.concurrent.TimeoutException;
+        
+import java.io.IOException;
+import java.util.concurrent.TimeoutException;
 /**
  *
  * @author pfsel
@@ -17,16 +26,18 @@ import javax.ws.rs.client.WebTarget;
 public class JFPrincipal extends javax.swing.JFrame {
     public Container painelPrincipal;
     ClienteRobot c = new ClienteRobot();
-   
+    private static final String EXCHANGE_NAME = "logs";
     /**
      * Creates new form JFPrincipal
      */
-    public JFPrincipal() {
+    public JFPrincipal() throws Exception {
         initComponents();
         this.painelPrincipal = this.getContentPane();
         this.setLocationRelativeTo(null);
         this.setTitle("Sistema supervisório");
-
+        //GerenciaPausa g = new GerenciaPausa();
+       // g.run();
+       this.starta();
     }
 
     /**
@@ -127,21 +138,70 @@ public class JFPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_JRBManualActionPerformed
 
     private void JBRightActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JBRightActionPerformed
-       JTFPrincipal.setText(c.movimenta("/direita"));
+       GerenciaThread g = new GerenciaThread("/direita");
+        g.start();        
+        JTFPrincipal.setText("direita");
     }//GEN-LAST:event_JBRightActionPerformed
 
+  
     private void JBLeftActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JBLeftActionPerformed
-        JTFPrincipal.setText(c.movimenta("/esquerda")); 
+        GerenciaThread g = new GerenciaThread("/esquerda");
+        g.start();        
+        JTFPrincipal.setText("esquerda");
     }//GEN-LAST:event_JBLeftActionPerformed
 
     private void JBForwardActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JBForwardActionPerformed
-       JTFPrincipal.setText(c.movimenta("/frente"));
+      GerenciaThread g = new GerenciaThread("/frente");
+        g.start();        
+        JTFPrincipal.setText("frente");
     }//GEN-LAST:event_JBForwardActionPerformed
 
     private void JBBackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JBBackActionPerformed
-        JTFPrincipal.setText(c.movimenta("/re"));
+        GerenciaThread g = new GerenciaThread("/re");
+        g.start();        
+        JTFPrincipal.setText("re");
     }//GEN-LAST:event_JBBackActionPerformed
     
+     public void starta() throws Exception {
+        ConnectionFactory factory = new ConnectionFactory();
+        factory.setHost("localhost");
+        Connection connection = factory.newConnection();
+        Channel channel = connection.createChannel();
+
+        channel.exchangeDeclare(EXCHANGE_NAME, "fanout");
+        String queueName = channel.queueDeclare().getQueue();
+        channel.queueBind(queueName, EXCHANGE_NAME, "");
+
+        System.out.println(" [*] Waiting for messages. To exit press CTRL+C");
+
+        Consumer consumer;
+       consumer = new DefaultConsumer(channel) {
+           @Override
+           public void handleDelivery(String consumerTag, Envelope envelope,
+                   AMQP.BasicProperties properties, byte[] body) throws IOException {
+               String message = new String(body, "UTF-8");
+               System.out.println(" [x] Received '" + message + "'");
+               if(message.matches("1")){
+                   trava(1);
+               } else {
+                   trava(0);
+               }
+           }
+       };
+        channel.basicConsume(queueName, true, consumer);
+    }
+    
+    public void trava(int i){
+        if (i==0){
+            this.liberaBotoes();
+        } else {
+        JBBack.setEnabled(false);
+        JBForward.setEnabled(false);
+        JBLeft.setEnabled(false);
+        JBRight.setEnabled(false);
+        JRBAutonomo.setEnabled(false); 
+        }
+    }
     private void liberaBotoes(){
         JBBack.setEnabled(true);
         JBForward.setEnabled(true);
@@ -179,9 +239,12 @@ public class JFPrincipal extends javax.swing.JFrame {
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new JFPrincipal().setVisible(true);
-            }
+            public void run()  {
+               try { new JFPrincipal().setVisible(true);
+            }   catch(Exception e){
+                 System.out.println("erro frente");}
+        
+    }
         });
     }
 
