@@ -164,7 +164,11 @@ public class JFPrincipal extends javax.swing.JFrame {
     
      public void starta() throws Exception {
         ConnectionFactory factory = new ConnectionFactory();
-        factory.setHost("localhost");
+        factory.setUsername("the_user");
+	factory.setPassword("the_pass");
+        factory.setVirtualHost("/");
+        factory.setHost("192.168.1.13");        
+        factory.setPort(5672);
         Connection connection = factory.newConnection();
         Channel channel = connection.createChannel();
 
