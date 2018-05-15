@@ -87,19 +87,26 @@ public class FilaDeMensagens {
         channel.basicConsume(queueName, true, consumer);
 
     }
-
+    
+    private int inicio_de_partida=0;
+    private int flag_pausa = 0;
     private void controle(String mensagem) {
-        if(mensagem.matches("inicio=0")){
+      
+         if (mensagem.matches("1") & flag_pausa==0) {
+            this.pausa();
+            flag_pausa = 1;
+        } else if (mensagem.matches("0") & flag_pausa==1) {
+            this.restart();
+            flag_pausa=0;
+        } 
+        else if(mensagem.matches("0") & inicio_de_partida ==1){
+                inicio_de_partida = 0;
                JOptionPane.showMessageDialog(this.pai, "Fim de partida",
                     "Opa!",
                     JOptionPane.WARNING_MESSAGE);
         this.pai.travaBotoes();
-        }
-        else if (mensagem.matches("pausa=1")) {
-            this.pausa();
-        } else if (mensagem.matches("pausa=0")) {
-            this.restart();
         } else {
+            inicio_de_partida = 1;
             String bigmessage = mensagem;
             String[] separa = bigmessage.split("\"");
             String inicio = separa[3];
@@ -107,7 +114,7 @@ public class FilaDeMensagens {
             this.separaString(separa[4]);
             
             
-            if (modo.matches("modo=1") & inicio.matches("inicio=1")) {
+            if (modo.matches("1") & inicio.matches("1")) {
                   JOptionPane.showMessageDialog(this.pai, "Partida iniciada - modo manual",
                     "Opa!",
                     JOptionPane.WARNING_MESSAGE);
@@ -116,7 +123,7 @@ public class FilaDeMensagens {
                 this.pai.iniciaTabela();
             }
 
-            if (modo.matches("modo=0") & inicio.matches("inicio=1")) {
+            if (modo.matches("0") & inicio.matches("1")) {
                 JOptionPane.showMessageDialog(this.pai, "Partida iniciada - automatico",
                     "Opa!",
                     JOptionPane.WARNING_MESSAGE);
@@ -179,21 +186,24 @@ public class FilaDeMensagens {
                     "Opa!",
                     JOptionPane.WARNING_MESSAGE);
         this.pai.liberaBotoes();
-        if (this.status_modo == 1) {
+        if (this.status_modo == 2) {
             this.manual();
-        } else {
+        } else if(this.status_modo == 1) {
             this.automatico();
+        }
+        else {
+            this.pai.travaBotoes();
         }
     }
 
     private void manual() {
         this.pai.modoManual();
-        this.status_modo = 1;
+        this.status_modo = 2;
     }
 
     private void automatico() {
         this.pai.modoAutomatico();
-        this.status_modo = 0;
+        this.status_modo = 1;
     }
 
 };
