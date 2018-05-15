@@ -18,7 +18,10 @@ import java.io.IOException;
 import java.util.concurrent.TimeoutException;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.concurrent.TimeoutException;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -28,13 +31,18 @@ public class JFPrincipal extends javax.swing.JFrame {
 
     public Container painelPrincipal;
     private ClienteRobot c;
+    private ArrayList<String> posicoes;
     private FilaDeMensagens fila;
     private static final String EXCHANGE_NAME = "logs";
+    private DefaultTableModel modelo;
 
     /**
      * Creates new form JFPrincipal
      */
     public JFPrincipal() throws Exception {
+         JOptionPane.showMessageDialog(this, "Sem informação de modo de jogo",
+                    "Opa!",
+                    JOptionPane.WARNING_MESSAGE);
         initComponents();
         this.painelPrincipal = this.getContentPane();
         this.setLocationRelativeTo(null);
@@ -42,8 +50,9 @@ public class JFPrincipal extends javax.swing.JFrame {
         this.travaBotoes();
         this.c = new ClienteRobot();
         this.fila = new FilaDeMensagens("guest","guest",this);
-        
-
+        posicoes = new ArrayList<String>();
+        modelo = (DefaultTableModel) JTTabelaPos.getModel();
+       
     }
 
     /**
@@ -64,6 +73,8 @@ public class JFPrincipal extends javax.swing.JFrame {
         JRBManual = new javax.swing.JRadioButton();
         JRBAutonomo = new javax.swing.JRadioButton();
         JTFPrincipal = new javax.swing.JTextField();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        JTTabelaPos = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -78,7 +89,7 @@ public class JFPrincipal extends javax.swing.JFrame {
                 JBBackActionPerformed(evt);
             }
         });
-        jPanel1.add(JBBack, new org.netbeans.lib.awtextra.AbsoluteConstraints(391, 201, -1, -1));
+        jPanel1.add(JBBack, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 210, -1, -1));
 
         JBForward.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/cima.png"))); // NOI18N
         JBForward.setEnabled(false);
@@ -87,7 +98,7 @@ public class JFPrincipal extends javax.swing.JFrame {
                 JBForwardActionPerformed(evt);
             }
         });
-        jPanel1.add(JBForward, new org.netbeans.lib.awtextra.AbsoluteConstraints(391, 152, -1, -1));
+        jPanel1.add(JBForward, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 160, -1, -1));
 
         JBRight.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/direita.png"))); // NOI18N
         JBRight.setEnabled(false);
@@ -96,7 +107,7 @@ public class JFPrincipal extends javax.swing.JFrame {
                 JBRightActionPerformed(evt);
             }
         });
-        jPanel1.add(JBRight, new org.netbeans.lib.awtextra.AbsoluteConstraints(464, 201, -1, -1));
+        jPanel1.add(JBRight, new org.netbeans.lib.awtextra.AbsoluteConstraints(560, 210, -1, -1));
 
         JBLeft.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/esquerda.png"))); // NOI18N
         JBLeft.setEnabled(false);
@@ -105,7 +116,7 @@ public class JFPrincipal extends javax.swing.JFrame {
                 JBLeftActionPerformed(evt);
             }
         });
-        jPanel1.add(JBLeft, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 201, -1, -1));
+        jPanel1.add(JBLeft, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 210, -1, -1));
 
         JBGMODO.add(JRBManual);
         JRBManual.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
@@ -122,6 +133,33 @@ public class JFPrincipal extends javax.swing.JFrame {
         JRBAutonomo.setText("AUTÔNOMO");
         jPanel1.add(JRBAutonomo, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 40, -1, -1));
         jPanel1.add(JTFPrincipal, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 20, 180, -1));
+
+        JTTabelaPos.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "Caça n°", "Posição (x,y)"
+            }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.String.class, java.lang.String.class
+            };
+            boolean[] canEdit = new boolean [] {
+                false, false
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jScrollPane1.setViewportView(JTTabelaPos);
+
+        jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 60, 190, 200));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -177,11 +215,11 @@ public class JFPrincipal extends javax.swing.JFrame {
         JRBAutonomo.setEnabled(false);
         JRBManual.setEnabled(false);
         JTFPrincipal.setEnabled(false);
+     
 
     }
 
     public void liberaBotoes() {
-
         JBBack.setEnabled(true);
         JBForward.setEnabled(true);
         JBLeft.setEnabled(true);
@@ -189,9 +227,57 @@ public class JFPrincipal extends javax.swing.JFrame {
         JRBAutonomo.setEnabled(true);
         JRBManual.setEnabled(true);
         JTFPrincipal.setEnabled(true);
-
+        
     }
-
+    
+    public void iniciaTabela(){
+        this.criaTabela();
+    }
+    
+    private void criaTabela(){
+        
+        //this.removeTabela();
+      
+        String[] linha = new String[2];
+       
+        if(modelo.getRowCount() != 0) {
+          for (int i = 0; i < posicoes.size() ; i++){
+            modelo.removeRow(0);
+        }
+        }
+        for(int i = 0; i < posicoes.size(); i++){
+            
+            linha[0] = Integer.toString(i);
+            linha[1] = posicoes.get(i);
+            System.out.println(linha[1]);
+            modelo.addRow(linha);
+            
+        
+        
+        
+        }
+   }
+     
+    public void recebePosicoes(ArrayList<String> posicoes){        
+        this.posicoes=posicoes;
+    }
+    public void modoManual(){
+        this.travaBotoes();
+        JBBack.setEnabled(true);
+        JBForward.setEnabled(true);
+        JBLeft.setEnabled(true);
+        JBRight.setEnabled(true);
+        JRBManual.setEnabled(true);
+        JRBManual.setSelected(true);
+        JTFPrincipal.setEnabled(true);        
+   }
+    
+    public void modoAutomatico(){
+        this.travaBotoes();
+        JRBAutonomo.setSelected(true);
+        JRBAutonomo.setEnabled(true);
+        
+    }
     /**
      * @param args the command line arguments
      */
@@ -241,6 +327,8 @@ public class JFPrincipal extends javax.swing.JFrame {
     private javax.swing.JRadioButton JRBAutonomo;
     private javax.swing.JRadioButton JRBManual;
     private javax.swing.JTextField JTFPrincipal;
+    private javax.swing.JTable JTTabelaPos;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JScrollPane jScrollPane1;
     // End of variables declaration//GEN-END:variables
 }
