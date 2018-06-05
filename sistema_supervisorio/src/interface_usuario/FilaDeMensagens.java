@@ -87,26 +87,16 @@ public class FilaDeMensagens {
         channel.basicConsume(queueName, true, consumer);
 
     }
-    
-    private int inicio_de_partida=0;
-    private int flag_pausa = 0;
+
     private void controle(String mensagem) {
-      
-         if (mensagem.matches("1") & flag_pausa==0) {
+       if (mensagem.matches("1")) {
             this.pausa();
-            flag_pausa = 1;
-        } else if (mensagem.matches("0") & flag_pausa==1) {
+        } else if (mensagem.matches("0")) {
             this.restart();
-            flag_pausa=0;
-        } 
-        else if(mensagem.matches("0") & inicio_de_partida ==1){
-                inicio_de_partida = 0;
-               JOptionPane.showMessageDialog(this.pai, "Fim de partida",
-                    "Opa!",
-                    JOptionPane.WARNING_MESSAGE);
-        this.pai.travaBotoes();
-        } else {
-            inicio_de_partida = 1;
+        } else if (mensagem.matches("10")){
+            this.fim();
+        }         
+        else {
             String bigmessage = mensagem;
             String[] separa = bigmessage.split("\"");
             String inicio = separa[3];
@@ -153,8 +143,8 @@ public class FilaDeMensagens {
         String pos5 = pos[5].substring(3, 7);
         String pos6 = pos[6].substring(3, 7);
         String pos7 = pos[7].substring(3, 7);
-        String pos8 = pos[8].substring(3, 7);
-        String pos9 = pos[9].substring(3, 7);
+        //String pos8 = pos[8].substring(3, 7);
+        //String pos9 = pos[9].substring(3, 7);
 
         posicoes.add(pos0);
         posicoes.add(pos1);
@@ -164,13 +154,19 @@ public class FilaDeMensagens {
         posicoes.add(pos5);
         posicoes.add(pos6);
         posicoes.add(pos7);
-        posicoes.add(pos8);
-        posicoes.add(pos9);
+        //posicoes.add(pos8);
+        //posicoes.add(pos9);
         
         //System.out.println(posicoes.get(0));
     }
   
-    
+    private void fim(){
+         JOptionPane.showMessageDialog(this.pai, "Partida finalizada",
+                    "Opa!",
+                    JOptionPane.WARNING_MESSAGE);
+        this.pai.travaBotoes();
+        
+    }
     public void enviaPosicoes(){
         this.pai.recebePosicoes(posicoes);
     }
@@ -186,24 +182,21 @@ public class FilaDeMensagens {
                     "Opa!",
                     JOptionPane.WARNING_MESSAGE);
         this.pai.liberaBotoes();
-        if (this.status_modo == 2) {
+        if (this.status_modo == 1) {
             this.manual();
-        } else if(this.status_modo == 1) {
+        } else {
             this.automatico();
-        }
-        else {
-            this.pai.travaBotoes();
         }
     }
 
     private void manual() {
         this.pai.modoManual();
-        this.status_modo = 2;
+        this.status_modo = 1;
     }
 
     private void automatico() {
         this.pai.modoAutomatico();
-        this.status_modo = 1;
+        this.status_modo = 0;
     }
 
 };

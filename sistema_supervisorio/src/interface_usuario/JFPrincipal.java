@@ -159,7 +159,7 @@ public class JFPrincipal extends javax.swing.JFrame {
         });
         jScrollPane1.setViewportView(JTTabelaPos);
 
-        jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 60, 190, 200));
+        jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 90, 190, 160));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -247,7 +247,7 @@ public class JFPrincipal extends javax.swing.JFrame {
         }
         for(int i = 0; i < posicoes.size(); i++){
             
-            linha[0] = Integer.toString(i);
+            linha[0] = Integer.toString(i+1);
             linha[1] = posicoes.get(i);
             System.out.println(linha[1]);
             modelo.addRow(linha);
