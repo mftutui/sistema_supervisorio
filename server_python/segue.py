@@ -18,11 +18,14 @@ md = ev3.LargeMotor('outC');  assert md.connected  # motor direito
 class segueLinha:
 
     def esquerda(self):
-        me.run_timed(time_sp=3350, speed_sp=-90)
+        md.run_timed(time_sp=3700, speed_sp=90)
         sleep(2)
 
     def direita(self):
-        md.run_timed(time_sp=3350, speed_sp=90)
+        me.run_timed(time_sp=1500, speed_sp=90)
+        md.run_timed(time_sp=1500, speed_sp=90)
+        sleep(2)
+        me.run_timed(time_sp=3500, speed_sp=90)
         sleep(2)
 
     # Main method
@@ -79,11 +82,11 @@ class segueLinha:
             print(cores[cor.value()]) # printa a cor no console
 
             if (cores[cor.value()] == 'green'):
-                sleep(2) # degub
                 self.esquerda()
+                sleep(2)
             elif (cores[cor.value()] == 'yellow'):
-                Sound.speak(cores[cor.value()]).wait() # debug
                 self.direita()
+                sleep(2)
 
 # Main
 if __name__ == "__main__":
