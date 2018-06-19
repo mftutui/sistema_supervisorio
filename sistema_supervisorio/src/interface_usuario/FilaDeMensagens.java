@@ -20,6 +20,8 @@ import java.util.concurrent.TimeoutException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.concurrent.TimeoutException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 
 /**
@@ -29,7 +31,8 @@ import javax.swing.JOptionPane;
 public class FilaDeMensagens {
 
     private static final String EXCHANGE_NAME = "logs";
-    
+    private static final String RETURN_NAME = "retorno";
+    private static final String MEUIP = "192.168.1.8";
     private int status_modo;
     private String user;
     private ArrayList<String> posicoes;
@@ -79,35 +82,55 @@ public class FilaDeMensagens {
                 message = new String(body, "UTF-8");
                 System.out.println(" [x] Received '" + message + "'");
                 fila.controle(message);
-
+                try {
+                    fila.envia_confirmacao();
+                } catch (TimeoutException ex) {
+                    Logger.getLogger(FilaDeMensagens.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
 
         };
-
+        System.out.println("passou aqui");
         channel.basicConsume(queueName, true, consumer);
+     
 
     }
+    
+    public void envia_confirmacao() throws IOException, TimeoutException{
+           System.out.println("passou consume");
+        ConnectionFactory factory_retorno = new ConnectionFactory();
+        factory_retorno.setHost("localhost");
+        Connection connection_retorno = factory_retorno.newConnection();
+        Channel channel_retorno = connection_retorno.createChannel();
 
+        channel_retorno.exchangeDeclare(RETURN_NAME, BuiltinExchangeType.FANOUT);
+
+        String message = "ok;"+MEUIP;
+
+        channel_retorno.basicPublish(RETURN_NAME, "", null, message.getBytes("UTF-8"));
+        System.out.println(" [x] Sent '" + message + "'");
+        channel_retorno.close();
+        connection_retorno.close();
+
+    }
     private void controle(String mensagem) {
-       if (mensagem.matches("1")) {
+        if (mensagem.matches("1")) {
             this.pausa();
         } else if (mensagem.matches("0")) {
             this.restart();
-        } else if (mensagem.matches("10")){
+        } else if (mensagem.matches("10")) {
             this.fim();
-        }         
-        else {
+        } else {
             String bigmessage = mensagem;
             String[] separa = bigmessage.split("\"");
             String inicio = separa[3];
             String modo = separa[1];
             this.separaString(separa[4]);
-            
-            
+
             if (modo.matches("1") & inicio.matches("1")) {
-                  JOptionPane.showMessageDialog(this.pai, "Partida iniciada - modo manual",
-                    "Opa!",
-                    JOptionPane.WARNING_MESSAGE);
+                JOptionPane.showMessageDialog(this.pai, "Partida iniciada - modo manual",
+                        "Opa!",
+                        JOptionPane.WARNING_MESSAGE);
                 this.manual();
                 this.enviaPosicoes();
                 this.pai.iniciaTabela();
@@ -115,24 +138,22 @@ public class FilaDeMensagens {
 
             if (modo.matches("0") & inicio.matches("1")) {
                 JOptionPane.showMessageDialog(this.pai, "Partida iniciada - automatico",
-                    "Opa!",
-                    JOptionPane.WARNING_MESSAGE);
+                        "Opa!",
+                        JOptionPane.WARNING_MESSAGE);
                 this.automatico();
                 this.enviaPosicoes();
                 this.pai.iniciaTabela();
-                
+
             }
 
-            
-            
         }
     }
 
     private void separaString(String mensagem) {
-        while(!posicoes.isEmpty()){
+        while (!posicoes.isEmpty()) {
             posicoes.remove(0);
-    }
-        
+        }
+
         String[] pos = mensagem.split("]");
 
         String pos0 = pos[0].substring(4, 8);
@@ -156,31 +177,33 @@ public class FilaDeMensagens {
         posicoes.add(pos7);
         //posicoes.add(pos8);
         //posicoes.add(pos9);
-        
+
         //System.out.println(posicoes.get(0));
     }
-  
-    private void fim(){
-         JOptionPane.showMessageDialog(this.pai, "Partida finalizada",
-                    "Opa!",
-                    JOptionPane.WARNING_MESSAGE);
+
+    private void fim() {
+        JOptionPane.showMessageDialog(this.pai, "Partida finalizada",
+                "Opa!",
+                JOptionPane.WARNING_MESSAGE);
         this.pai.travaBotoes();
-        
+
     }
-    public void enviaPosicoes(){
+
+    public void enviaPosicoes() {
         this.pai.recebePosicoes(posicoes);
     }
+
     private void pausa() {
-         JOptionPane.showMessageDialog(this.pai, "Partida parada",
-                    "Opa!",
-                    JOptionPane.WARNING_MESSAGE);
+        JOptionPane.showMessageDialog(this.pai, "Partida parada",
+                "Opa!",
+                JOptionPane.WARNING_MESSAGE);
         this.pai.travaBotoes();
     }
 
     private void restart() {
-          JOptionPane.showMessageDialog(this.pai, "Partida voltou",
-                    "Opa!",
-                    JOptionPane.WARNING_MESSAGE);
+        JOptionPane.showMessageDialog(this.pai, "Partida voltou",
+                "Opa!",
+                JOptionPane.WARNING_MESSAGE);
         this.pai.liberaBotoes();
         if (this.status_modo == 1) {
             this.manual();

@@ -49,7 +49,7 @@ public class JFPrincipal extends javax.swing.JFrame {
         this.setTitle("Sistema supervisório");
         this.travaBotoes();
         this.c = new ClienteRobot();
-        this.fila = new FilaDeMensagens("guest","guest",this);
+        this.fila = new FilaDeMensagens("the_user","the_pass",this);
         posicoes = new ArrayList<String>();
         modelo = (DefaultTableModel) JTTabelaPos.getModel();
        
