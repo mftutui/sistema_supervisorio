@@ -32,7 +32,7 @@ public class FilaDeMensagens {
 
     private static final String EXCHANGE_NAME = "logs";
     private static final String RETURN_NAME = "retorno";
-    private static final String MEUIP = "192.168.1.8";
+    private static final String MEUIP = "192.168.0.8";
     private int status_modo;
     private String user;
     private ArrayList<String> posicoes;
@@ -57,8 +57,8 @@ public class FilaDeMensagens {
 
     public void starta(final FilaDeMensagens f) throws Exception {
         ConnectionFactory factory = new ConnectionFactory();
-        factory.setUsername("guest");
-        factory.setPassword("guest");
+        factory.setUsername("the_user");
+        factory.setPassword("the_pass");
         factory.setVirtualHost("/");
         factory.setHost("localhost");
         factory.setPort(5672);
@@ -105,7 +105,7 @@ public class FilaDeMensagens {
 
         channel_retorno.exchangeDeclare(RETURN_NAME, BuiltinExchangeType.FANOUT);
 
-        String message = "ok;"+MEUIP;
+        String message = MEUIP;
 
         channel_retorno.basicPublish(RETURN_NAME, "", null, message.getBytes("UTF-8"));
         System.out.println(" [x] Sent '" + message + "'");
