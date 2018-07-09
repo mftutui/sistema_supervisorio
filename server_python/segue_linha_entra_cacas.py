@@ -10,84 +10,84 @@ import threading
 from math import sqrt
 import sys
 
-
-#luz = ev3.ColorSensor();      assert luz.connected
 cor = ev3.ColorSensor();      assert cor.connected
-
-#luz.mode = 'COL-REFLECT'  # intensidade da luz
 cor.mode = 'COL-COLOR'  # intensidade da luz
-cores=('unknown','black','blue','green','yellow','red','white','brown')
 
 # motors
 me = ev3.LargeMotor('outB');  assert me.connected  # motor esquerdo
 md = ev3.LargeMotor('outC');  assert md.connected  # motor direito
 
+lcd = Screen()
+smile = True
+
 class Jogo:
 
     def __init__ (self):
         self.lista_inicial = ["1:3,5", "2:3,3", "3:5,3", "4:5,5", "5:2,3"]
+        self.cores = ('unknown','black','blue','green','yellow','red','white','brown')
+
+    def tela():
+        lcd = Screen()
+        smile = True
+
+        while True:
+            lcd.clear()
+            # lcd.draw returns a PIL.ImageDraw handle
+            lcd.draw.ellipse(( 20, 20,  60, 60))
+            lcd.draw.ellipse((118, 20, 158, 60))
+            lcd.draw.arc((20, 80, 158, 100), 0, 180)
+            # Update lcd display
+            lcd.update()
+            sleep(1)
 
     def esquerda(self):
-        m_dir.run_timed(time_sp=3700, speed_sp=90)
+        md.run_timed(time_sp=3700, speed_sp=90)
         sleep(3)
 
     def direita(self):
-        m_esq.run_timed(time_sp=1500, speed_sp=90)
-        m_dir.run_timed(time_sp=1500, speed_sp=90)
+        me.run_timed(time_sp=1500, speed_sp=90)
+        md.run_timed(time_sp=1500, speed_sp=90)
         sleep(3)
-        m_esq.run_timed(time_sp=3500, speed_sp=90)
+        me.run_timed(time_sp=3500, speed_sp=90)
         sleep(3)
 
     def meia_direita(self):
-        m_esq.run_timed(time_sp=3500, speed_sp=90)
+        me.run_timed(time_sp=3500, speed_sp=90)
         sleep(3)
 
     def giro(self):
-        m_esq.run_timed(time_sp=4000, speed_sp=-400)
-        m_dir.run_timed(time_sp=4000, speed_sp=400)
+        me.run_timed(time_sp=4000, speed_sp=-400)
+        md.run_timed(time_sp=4000, speed_sp=400)
         sleep(2)
-        m_esq.run_timed(time_sp=4000, speed_sp=400)
-        m_dir.run_timed(time_sp=4000, speed_sp=-400)
+        me.run_timed(time_sp=4000, speed_sp=400)
+        md.run_timed(time_sp=4000, speed_sp=-400)
 
     def segue_preto(self):
         cor.mode = 'COL-COLOR'
         while True:
-            target_value = cor.value()
-            Kp = 15
-
-            area_branca = 6
-            area_preta = 1
-
-            bPower = (area_branca - target_value) * Kp
-            cPower =  (target_value - area_preta) * Kp
-
-            me.run_timed(time_sp=200, speed_sp=cPower)
-            md.run_timed(time_sp=200, speed_sp=bPower)
-            sleep(0.2)
+            if cor.value() != 3: #nao esta no verde
+                target_value = cor.value()
+                Kp = 15
+                area_branca = 6
+                area_preta = 1
+                bPower = (area_branca - target_value) * Kp
+                cPower =  (target_value - area_preta) * Kp
+                me.run_timed(time_sp=200, speed_sp=cPower)
+                md.run_timed(time_sp=200, speed_sp=bPower)
+                sleep(0.2)
+            else: break
+                #para de andar!
 
     def toca_musica(self):
             while True:
                 Sound.play('tokyo.wav').wait()
+                sleep(1)
 
     def verifica_cor(self):
-        cor.mode = 'COL-COLOR'  # intensidade da luz
+        cor.mode = 'COL-COLOR'
         while True:
-            print(cores[cor.value()])
-
-            if cores[cor.value()] == 'green':
-                print("ainda nao é uma caca")
-                sleep(0.2)
-
-                return 0
-
-            elif cores[cor.value()] == 'red':
-                print("voce chegou em uma caca!!!!!!!!!")
-                sleep(0.2)
-
-                return 1
-            else:
-                return 2
-
+            print(cor.value())
+            sleep(0.2)
 
     def lista_cacas(self):
         aux = 0
@@ -189,16 +189,9 @@ class Jogo:
                     yA = yA + 1
                     print("Estava no ponto " + str(xAinicio) + "," + str(yAinicio))
                     print("Ponto atual do robo " + str(xA) + "," + str(yA))
-                    #robot.frente()
+                    robot.segue_preto()
+                    sleep(1)
 
-                    t2.start()
-
-                    cor.mode = 'COL-COLOR'  # intensidade da luz
-                    while (cores[cor.value()] != 'green') or (cores[cor.value()] != 'red'):
-                        print(cores[cor.value()])
-                    t2.stop()
-
-                    #robot.segue_preto()
                 # Se menor que 1, anda para tras
                 else:
                     print("Anda 1 casa pra tras")
@@ -208,13 +201,8 @@ class Jogo:
                     #robot.re()
                     robot.diteita()
                     robot.meia_direita()
-                    #robot.segue_preto()
-
-                    t2.start()
-                    cor.mode = 'COL-COLOR'  # intensidade da luz
-                    while (cores[cor.value()] != 'green') or (cores[cor.value()] != 'red'):
-                        print(cores[cor.value()])
-                    t2.stop()
+                    robot.segue_preto()
+                    sleep(1)
 
             # Caso a diferença em y seja igual a zero, anda em x
             else:
@@ -234,28 +222,13 @@ class Jogo:
                             robot.direita()
                             sleep(2)
                             #robot.frente()
-                            #robot.segue_preto()
-
-                            t2.start()
-                            cor.mode = 'COL-COLOR'  # intensidade da luz
-                            while (cores[cor.value()] != 'green') or (cores[cor.value()] != 'red'):
-                                print(cores[cor.value()])
-                            t2.stop()
-
-                            sleep(2)
-
+                            robot.segue_preto()
+                            sleep(1)
                         # se ja girei, só ando
                         else:
                             #robot.frente()
-                            #robot.segue_preto()
-
-                            t2.start()
-                            cor.mode = 'COL-COLOR'  # intensidade da luz
-                            while (cores[cor.value()] != 'green') or (cores[cor.value()] != 'red'):
-                                print(cores[cor.value()])
-                            t2.stop()
-
-                            sleep(2)
+                            robot.segue_preto()
+                            sleep(1)
                             print("So anda pra frente")
 
                         print("Estava no ponto " + str(xAinicio) + "," + str(yAinicio))
@@ -276,29 +249,15 @@ class Jogo:
                             robot.esquerda()
                             sleep(2)
                             #robot.frente()
-                            #robot.segue_preto()
-
-                            t2.start()
-                            cor.mode = 'COL-COLOR'  # intensidade da luz
-                            while (cores[cor.value()] != 'green') or (cores[cor.value()] != 'red'):
-                                print(cores[cor.value()])
-                            t2.stop()
-
-                            sleep(2)
+                            robot.segue_preto()
+                            sleep(1)
 
                         # Se ja girou, anda para frente
                         else:
                             print("So anda pra frente")
                             #robot.frente()
-                            #robot.segue_preto()
-
-                            t2.start()
-                            cor.mode = 'COL-COLOR'  # intensidade da luz
-                            while (cores[cor.value()] != 'green') or (cores[cor.value()] != 'red'):
-                                print(cores[cor.value()])
-                            t2.stop()
-
-                            sleep(2)
+                            robot.segue_preto()
+                            sleep(1)
 
                         print("Estava no ponto " + str(xAinicio) + "," + str(yAinicio))
                         print("Ponto atual do robo " + str(xA) + "," + str(yA))
@@ -328,15 +287,18 @@ if __name__ == "__main__":
 
     t1 = threading.Thread(target=robot.lista_cacas)
     t2 = threading.Thread(target=robot.segue_preto)
-    #t3 = threading.Thread(target=robot.toca_musica)
+    t3 = threading.Thread(target=robot.toca_musica)
     t4 = threading.Thread(target=robot.verifica_cor)
+    t5 = threading.Thread(target=robot.tela)
 
-    t1.start()
-    #t2.start()
-    #t3.start()
-    #t4.start()
+    t1.start()  #lista_cacas
+    #t2.start()  #segue_preto
+    t3.start() #toca_musica
+    #t4.start()  #verifica_cor --- degug
+    t5.start()  #tela
 
     t1.join()
     #t2.join()
-    #t3.join()
+    t3.join()
     #t4.join()
+    t5.join()
