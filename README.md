@@ -11,6 +11,6 @@ A execução do jogo foi dividida em três sistemas diferentes: Sistema de Audit
 
 ![Projeto Integrador](https://github.com/mftutui/sistema_supervisorio/projetointegrador.jpg)
 
-O repositório possui os códigos utilizados para a implementação do **([Sistema Supervisório (SS)](https://github.com/mftutui/sistema_supervisorio/tree/master/sistema_supervisorio))** e do **([Sistema do Robô (SR)](https://github.com/mftutui/sistema_supervisorio/tree/master/server_python))**
+O repositório possui os códigos utilizados para a implementação do **[Sistema Supervisório](https://github.com/mftutui/sistema_supervisorio/tree/master/sistema_supervisorio)** e do **[Sistema do Robô](https://github.com/mftutui/sistema_supervisorio/tree/master/server_python)**
 
-([Relatório final do projeto](https://pt.overleaf.com/read/nfhsskmvbkjb)) 
+Relatório final do projeto no [Overleaf](https://pt.overleaf.com/read/nfhsskmvbkjb) 
